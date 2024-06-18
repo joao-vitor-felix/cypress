@@ -12,7 +12,8 @@
     "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
     "db:setup": "prisma db push",
-    "cypress": "cypress open"
+    "cypress": "cypress run",
+    "cypress:open": "cypress open"
   },
   "prisma": {
     "seed": "node prisma/reset.cjs"
