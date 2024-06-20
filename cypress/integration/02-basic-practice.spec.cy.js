@@ -33,7 +33,8 @@ describe('Basic Practice', () => {
       cy.get('[data-test="filter-items"]').type('Tooth');
 
       cy.get('[data-test="items"] li').each(($item) => {
-        expect($item.text()).to.include('Tooth');
+        // expect($item.text()).to.include('Tooth');
+        cy.wrap($item).should('include.text', 'Tooth');
       });
     });
 
@@ -53,7 +54,7 @@ describe('Basic Practice', () => {
 
     describe('Remove individual items', () => {
       it('should have a remove button on an item', () => {
-        cy.contains('Tooth Brush').siblings('[data-test="remove"]').should('exist');
+        cy.get('[data-test="items"] li').find('[data-test="remove"]');
       });
 
       it('should remove an item from the page', () => {
@@ -67,8 +68,8 @@ describe('Basic Practice', () => {
 
   describe('Mark all as unpacked', () => {
     it('should empty out the "Packed" list', () => {
-      cy.contains('Hoodie').click();
-      cy.get('[data-test="items-packed"]').contains('No items to show.');
+      cy.get('[data-test="mark-all-as-unpacked"]').click();
+      cy.get('[data-test="items-packed"] li').should('not.exist');
     });
 
     it('should empty have all of the items in the "Unpacked" list', () => {
@@ -82,12 +83,15 @@ describe('Basic Practice', () => {
 
   describe('Mark individual item as packed', () => {
     it('should move an individual item from "Unpacked" to "Packed', () => {
-      const item = 'Tooth Brush';
-
-      cy.get('[data-test="items-unpacked"] li label').first().contains(item);
-      cy.get('[data-test="items-unpacked"] li label').first().click();
-      cy.get('[data-test="items-unpacked"] li label').first().contains(item).should('not.exist');
-      cy.get('[data-test="items-packed"] li label').first().contains(item);
+      cy.get('[data-test="items-unpacked"] li label')
+        .first()
+        .within(() => {
+          cy.get('input[type="checkbox"]').click();
+        })
+        .then(($item) => {
+          const text = $item.text();
+          cy.get('[data-test="items-packed"] li label').first().should('have.text', text);
+        });
     });
   });
 });
