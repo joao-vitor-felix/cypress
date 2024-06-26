@@ -39,4 +39,16 @@ describe('Secret Menu Items', () => {
   it('should exist have the title on the page', () => {
     cy.get('h1').should('contain', 'Secret Menu Items');
   });
+
+  for (const rating of ratings) {
+    it.only(`should display restaurants with rating of ${rating} or higher`, () => {
+      cy.get('#minimum-rating-visibility').invoke('val', rating).trigger('change');
+      cy.get('td[headers="popularity-column"]').each(($el) => {
+        expect(+$el.text()).to.be.gte(rating);
+        // cy.wrap($el)
+        //   .invoke('text')
+        //   .then(($val) => cy.wrap(+$val).should('be.gte', rating));
+      });
+    });
+  }
 });
