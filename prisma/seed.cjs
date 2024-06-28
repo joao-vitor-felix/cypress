@@ -45,7 +45,8 @@ async function main() {
     },
   });
 
-  return Promise.all([first, second]);
+  await Promise.all([first, second]);
+  return null;
 }
 
 if (require.main === module) {

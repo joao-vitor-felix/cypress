@@ -5,7 +5,8 @@ async function main() {
   const deletePosts = prisma.post.deleteMany({});
   const deleteUsers = prisma.user.deleteMany({});
 
-  return await prisma.$transaction([deletePosts, deleteUsers]);
+  await prisma.$transaction([deletePosts, deleteUsers]);
+  return null;
 }
 
 if (require.main === module) {
